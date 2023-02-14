@@ -1,3 +1,4 @@
+import javax.swing.plaf.PanelUI;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.*;
@@ -63,15 +64,58 @@ public class conn {
     }
 
     public static void Delete_type(int id) throws SQLException {
-        statmt = conn.createStatement();
+
         statmt.execute("DELETE FROM TYPES WHERE ID = " + id + ";");
         System.out.println("Данные с id = " + id + " удалены из таблицы");
     }
 
     public static void Update_type(int id, String new_type) throws SQLException {
-        statmt = conn.createStatement();
+
         statmt.execute("UPDATE TYPES SET TYPE = " + new_type + " WHERE ID = " + id + ";");
         System.out.println("Данные с id = " + id + " изменены");
+    }
+
+    public static void get_type(int id) throws SQLException {
+
+        resSet = statmt.executeQuery("SELECT TYPE FROM TYPES WHERE ID = " + id + ";");
+        String type = resSet.getString("type");
+        System.out.println("type = " + type);
+    }
+
+    public static void get_type_where(String where) throws SQLException{
+
+        resSet = statmt.executeQuery("SELECT TYPE FROM TYPES WHERE " + where + ";");
+        while (resSet.next()){
+            String type = resSet.getString("type");
+            System.out.println("type = " + type);
+        }
+    }
+
+    public static void get_all_types() throws SQLException {
+
+        resSet = statmt.executeQuery("SELECT TYPE FROM TYPES");
+        while (resSet.next()){
+            String type = resSet.getString("type");
+            System.out.println("type = " + type);
+        }
+    }
+
+    public static void cats() throws SQLException {
+
+        statmt.execute("CREATE TABLE if not exists 'cats' (" +
+                "'id' INTEGER PRIMARY KEY, " +
+                "'name' VARCHAR(20) NOT NULL, " +
+                "type_id INTEGER FOREIGN KEY REFERENCES TYPES (ID) NOT NULL, " +
+                "AGE INTEGER, NOT NULL" +
+                "WEIGHT DOUBLE);");
+
+        System.out.println("Таблица создана или уже существует.");
+    }
+
+    public static void insert_cat(int id, String name, String type, int age, Double weight) throws SQLException {
+
+        statmt.execute("INSERT INTO 'cats' VALUES (" + id + ", '" + name + "', '" + type + "', " + age + ", " + weight + ");");
+        System.out.println("Таблица заполнена");
     }
 
     // ЗАКРЫТИЕ
