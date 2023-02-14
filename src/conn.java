@@ -62,6 +62,18 @@ public class conn {
         System.out.println("Таблица выведена");
     }
 
+    public static void Delete_type(int id) throws SQLException {
+        statmt = conn.createStatement();
+        statmt.execute("DELETE FROM TYPES WHERE ID = " + id + ";");
+        System.out.println("Данные с id = " + id + " удалены из таблицы");
+    }
+
+    public static void Update_type(int id, String new_type) throws SQLException {
+        statmt = conn.createStatement();
+        statmt.execute("UPDATE TYPES SET TYPE = " + new_type + " WHERE ID = " + id + ";");
+        System.out.println("Данные с id = " + id + " изменены");
+    }
+
     // ЗАКРЫТИЕ
     public static void CloseDB() throws ClassNotFoundException, SQLException
     {
